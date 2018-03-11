@@ -1,0 +1,40 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "sts:AssumeRole",
+            "Effect": "Allow",
+            "Resource": "arn:aws:iam::*:role/Skunky"
+        },
+        {
+            "Action": [
+                "dynamodb:DeleteItem",
+                "dynamodb:GetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:UpdateTable"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:dynamodb:<region>:<account-number>:table/Skunky"
+        },
+        {
+            "Action": [
+                "sqs:DeleteMessage",
+                "sqs:DeleteMessageBatch",
+                "sqs:ListQueues",
+                "sqs:ReceiveMessage",
+                "sqs:GetQueueUrl"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:sqs:<region>:<account-number>:skunky"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:*"
+            ],
+            "Resource": "arn:aws:logs:*:*:*"
+        }
+    ]
+}

@@ -1,0 +1,51 @@
+{
+    "filter_config": {
+        "EventFilter": {
+            "ssh": "high",
+            "unknown": "critical"
+        }
+    },
+
+    "ACTIVE_FILTERS": [
+        "skunky.filters.event:EventFilter"
+    ],
+
+    "auditor_config": {
+        "CloudwatchLogsAuditor": {
+            "event": true
+        }
+    },
+
+    "ACTIVE_AUDITORS": [
+        "skunky.auditors.cloudwatchlogs:CloudwatchLogsAuditor"
+    ],
+
+    "logging": {
+        "version": 1,
+        "disable_existing_loggers": "False",
+        "formatters": {
+            "standard": {
+                "format": "%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]"
+            }
+        },
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+                "level": "DEBUG",
+                "formatter": "standard",
+                "stream": "ext://sys.stdout"
+            }
+        },
+        "loggers": {
+            "skunky": {
+                "handlers": ["console"],
+                "level": "DEBUG"
+            }
+        }
+    },
+
+    "tag": true,
+    "ttl_time": 2592000,
+    "time_run": 285,
+    "region": "us-west-2"
+}
