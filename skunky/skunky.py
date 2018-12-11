@@ -8,7 +8,6 @@ import sys
 import time
 from multiprocessing import Process
 
-
 import boto3
 from botocore.exceptions import ClientError
 from decimal import Decimal
@@ -149,8 +148,8 @@ class Skunky(object):
 
     def add_to_skunk(self, skunk):
 
-        account_id = skunk['identity']['accountId']
-        instance_region = skunk['identity']['region']
+        account_id = skunk['identity']['instance_account_id']
+        instance_region = skunk['identity']['instance_region']
 
         for filter in self.filter_plugins:
             try:
@@ -184,7 +183,7 @@ class Skunky(object):
                     # Add instance to DynamoDB table
                     if self.put(skunk):
                         count = count + 1
-                        instance_resources.append(skunk['identity']['instanceId'])
+                        instance_resources.append(skunk['identity']['instance_id'])
                         receipt_handles.append({'Id': str(count), 'ReceiptHandle': skunk['receipt_handle']})
 
                         try:
@@ -233,10 +232,10 @@ class Skunky(object):
         """ Will create a new entry only if one doesn't already exist """
         item = {}
         item['hash'] = self.hash(skunk)
-        item['instance_id'] = skunk['identity']['instanceId']
+        item['instance_id'] = skunk['identity']['instance_id']
         item['skunk_level'] = skunk['identity'].get('skunk_level', 'unknown')
-        item['account_id'] = skunk['identity']['accountId']
-        item['region'] = skunk['identity']['region']
+        item['account_id'] = skunk['identity']['instance_account_id']
+        item['region'] = skunk['identity']['instance_region']
         item['marked_dirty'] = skunk['dirty_timestamp']
         item['identity'] = json.dumps(skunk['identity'])
         item['ttl'] = self.ttl()
@@ -262,8 +261,8 @@ class Skunky(object):
         return True
 
     def hash(self, skunk):
-        return '{}::{}::{}::{}'.format(skunk['identity']['accountId'], skunk['identity']['region'],
-                                       skunk['identity']['instanceId'], skunk['dirty_timestamp'])
+        return '{}::{}::{}::{}'.format(skunk['identity']['instance_account_id'], skunk['identity']['instance_region'],
+                                       skunk['identity']['instance_id'], skunk['dirty_timestamp'])
 
     def ttl(self):
         return int(time.time() + self.ttl_time)
