@@ -31,7 +31,7 @@
         "handlers": {
             "console": {
                 "class": "logging.StreamHandler",
-                "level": "DEBUG",
+                "level": "INFO",
                 "formatter": "standard",
                 "stream": "ext://sys.stdout"
             }
@@ -44,7 +44,7 @@
         }
     },
 
-    "tag": true,
+    "tag": false,
     "ttl_time": 2592000,
     "time_run": 285,
     "region": "us-west-2"
